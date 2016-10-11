@@ -21,3 +21,74 @@ SELINUXTYPE(安全策略)
 
 
 /etc/selinux/semanage.conf
+
+日志文件
+/var/log/audit/audit.log
+type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html" dev="sda1"ino=1317685 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
+
+
+ SELinux工具
+
+ /usr/sbin/getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
+ /usr/sbin/setenforce — 修改SELinux运行模式，例子如下：
+
+         • setenforce 1 — SELinux以强制(enforcing)模式运行
+         • setenforce 0 — SELinux以警告(permissive)模式运行
+
+    关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
+    
+    /usr/sbin/sestatus -v — 显示系统的详细状态
+    /sbin/restorecon — 通过为适当的文件或安全环境标记扩展属性，设置一个或多个文件的安全环境
+    假设CentOS安装了apache，网页默认的主目录是/var/www/html，我们经常遇到这样的问题，在其他目录中创建了一个网页文件，然后用mv移动到网页默认目录/var/www/html中，但是在浏览器中却打不开这个文件，这很可能是因为这个文件的SELinux配置信息是继承原来那个目录的，与/var/www/html目录不同，使用mv移动的时候，这个SELinux配置信息也一起移动过来了，从而导致无法打开页面
+    
+    
+    
+     /sbin/fixfiles — 检查或校正文件系统中的安全环境数据库
+     8) chcon 修改文件、目录的安全上下文
+      chcon –u[user]
+      chcon –r[role]
+      chcon –t[type] 
+      chcon –R  递归
+      
+      
+context
+        • rpm包安装的：会根据rpm包内记录来生成安全上下文；
+
+        • 手动创建的文件：会根据policy中规定的来设置安全上下文；
+
+        • cp：会重新生成安全上下文；
+
+        • mv：安全上下文则不变。
+        
+         USER：ROLE：TYPE[LEVEL[：CATEGORY]]
+         [用户user]:[角色role]:[类型type（SELinux默认预设规则）]:[MLS、MCS]
+         unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 
+         
+USER
+
+         1) user identity：类似Linux系统中的UID，提供身份识别，用来记录身份；安全上下文的一部分；
+         2) 三种常见的 user:
+
+              • user_u ：普通用户登录系统后的预设；
+             • system_u ：开机过程中系统进程的预设；
+             • root ：root 登录后的预设；
+
+        4) 在targeted policy 中比较重要，所有预设的 SELinux Users 都是以 “_u” 结尾的，root 除外。
+        
+ROLE
+
+        1) 文件、目录和设备的role：通常是 object_r；
+        2) 程序的role：通常是 system_r；
+        3) 用户的role：targeted policy为system_r； strict policy为sysadm_r、staff_r、user_r；用户的role，类似系统中的GID，不同角色具备不同的的权限；用户可以具备多个role；但是同一时间内只能使用一个role；        
+
+        4) 使用基于RBAC(Roles Based Access Control) 的strict和mls策略中，用来存储角色信息
+        
+TYPE
+
+        1) type：用来将主体(subject)和客体(object)划分为不同的组，给每个主体和系统中的客体定义了一个类型；为进程运行提供最低的权限环境；
+        2) 当一个类型与执行中的进程相关联时，其type也称为domain；
+        3) type是SElinux security context 中最重要的部位，是 SELinux Type Enforcement 的心脏，预设值以_t结尾；
+
+        LEVEL和CATEGORY：定义层次和分类，只用于mls策略中
+             • LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15,等级越来越高
+             • CATEGORY：代表分类，目前已经定义的分类为c0-c1023
