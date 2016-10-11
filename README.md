@@ -92,3 +92,7 @@ TYPE
         LEVEL和CATEGORY：定义层次和分类，只用于mls策略中
              • LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15,等级越来越高
              • CATEGORY：代表分类，目前已经定义的分类为c0-c1023
+
+
+
+http://selinuxproject.org/page/Main_Page
