@@ -18,3 +18,6 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
 SELINUXTYPE(安全策略)
    getsebool -a： 列出SELinux的所有布尔值
    setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
+
+
+/etc/selinux/semanage.conf
