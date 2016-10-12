@@ -31,12 +31,6 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
   /var/log/audit/audit.log
   * type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html"
   dev="sda1"ino=1317685 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
-    
-SELINUXTYPE(安全策略)
-   * getsebool -a： 列出SELinux的所有布尔值
-   * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
-
-/etc/selinux/semanage.conf
 
 ## SELinux相关命令
 
