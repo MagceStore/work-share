@@ -8,8 +8,8 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
 
 ## 配置文件
   /etc/sysconfig/selinux是一个软链，真正的配置文件为：/etc/selinux/config 
-    SELINUX=enforcing|permissive|disabled
-    SELINUXTYPE=targeted|minimum|mls
+    * SELINUX=enforcing|permissive|disabled
+    * SELINUXTYPE=targeted|minimum|mls
     
 ## 日志文件
 <table>
@@ -28,26 +28,25 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
 </table>
 ### 例子
   /var/log/audit/audit.log
-  type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html"
+  * type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html"
   dev="sda1"ino=1317685 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
     
 SELINUXTYPE(安全策略)
-   getsebool -a： 列出SELinux的所有布尔值
-   setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
-
+   * getsebool -a： 列出SELinux的所有布尔值
+   * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
 
 /etc/selinux/semanage.conf
 
 ## SELinux相关命令
 
-  getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
-  setenforce — 修改SELinux运行模式，例子如下：
+  * getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
+  * setenforce — 修改SELinux运行模式，例子如下：
     • setenforce 1 — SELinux以强制(enforcing)模式运行
     • setenforce 0 — SELinux以警告(permissive)模式运行
-  关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
+  * 关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
   
-  getsebool -a： 列出SELinux的所有布尔值 （安全策略）
-  setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
+  * getsebool -a： 列出SELinux的所有布尔值 （安全策略）
+  * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
     
   sestatus -v — 显示系统的详细状态
   restorecon — 通过为适当的文件或安全环境标记扩展属性，设置一个或多个文件的安全环境
@@ -60,14 +59,13 @@ SELINUXTYPE(安全策略)
     一般是对整个文件系统的， 后面一般跟 relabel，对整个系统 relabel后，一般我们都重新启动。如果，在根目录下有.autorelabel空文件的话，每次重新启动时都调用 fixfiles relabel
          
   chcon
-    chcon 修改文件、目录的安全上下文
-    chcon –u[user]
-    chcon –r[role]
-    chcon –t[type] 
-    chcon –R  递归
+    * chcon 修改文件、目录的安全上下文
+    * chcon –u[user]
+    * chcon –r[role]
+    * chcon –t[type] 
+    * chcon –R  递归
       
-  secon
-    －p 进程domain的确认
+  secon－p 进程domain的确认
 
   id
     能用来确认自己的 security context。
