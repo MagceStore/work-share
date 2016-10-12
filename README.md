@@ -41,8 +41,8 @@ SELINUXTYPE(安全策略)
 
   * getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
   * setenforce — 修改SELinux运行模式，例子如下：
-    • setenforce 1 — SELinux以强制(enforcing)模式运行
-    • setenforce 0 — SELinux以警告(permissive)模式运行
+    * setenforce 1 — SELinux以强制(enforcing)模式运行
+    * setenforce 0 — SELinux以警告(permissive)模式运行
   * 关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
   
   * getsebool -a： 列出SELinux的所有布尔值 （安全策略）
@@ -57,7 +57,7 @@ SELINUXTYPE(安全策略)
   
   * fixfiles
     一般是对整个文件系统的， 后面一般跟 relabel，对整个系统 relabel后，一般我们都重新启动。如果，在根目录下有.autorelabel空文件的话，每次重新启动时都调用 fixfiles relabel
-         
+    
   * chcon
     * chcon 修改文件、目录的安全上下文
     * chcon –u[user]
@@ -102,7 +102,7 @@ SELINUXTYPE(安全策略)
     * CATEGORY：代表分类，目前已经定义的分类为c0-c1023
     * LEVEL： /etc/selinux/targeted/setrans.conf
 
- ls ps -Z
+ ## ls ps -Z
  find –context 查特定的type的文件
 
 
