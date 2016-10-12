@@ -23,8 +23,22 @@ SELINUXTYPE(安全策略)
 /etc/selinux/semanage.conf
 
 日志文件
+auditd on	
+/var/log/audit/audit.log
+
+auditd off; rsyslogd on	
+/var/log/messages
+
+rsyslogd and auditd on	/var/log/audit/audit.log. Easier-to-read denial messages also sent to /var/log/messages
+
 /var/log/audit/audit.log
 type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html" dev="sda1"ino=1317685 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
+
+开机自启
+/sbin/chkconfig --levels 2345 auditd on
+
+/sbin/chkconfig --levels 2345 rsyslog on
+
 
 
  SELinux工具
@@ -53,7 +67,11 @@ type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm
       chcon –r[role]
       chcon –t[type] 
       chcon –R  递归
+           Run the chcon -t type file-name command to change the file type, where type is a type, such as httpd_sys_content_t, and file-name is a file or directory name.
+    Run the chcon -R -t type directory-name command to change the type of the directory and its contents, where type is a type, such as httpd_sys_content_t, and directory-name is a directory name. 
       
+      
+      secon
       
       进程domain的确认
 
@@ -120,3 +138,4 @@ level
 
 
 http://selinuxproject.org/page/Main_Page
+https://docs.fedoraproject.org/en-US/Fedora/19/html/Security_Guide/ch09.html
