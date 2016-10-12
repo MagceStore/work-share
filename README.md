@@ -7,7 +7,7 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
 在SELinux中没有root这个概念，安全策略是由管理员来定义的，任何软件都无法取代它。这意味着那些潜在的恶意软件所能造成的损害可以被控制在最小。一般情况下只有非常注重数据安全的企业级用户才会使用SELinux。
 
 ## 配置文件
-  /etc/sysconfig/selinux是一个软链，真正的配置文件为：/etc/selinux/config 
+  * /etc/sysconfig/selinux是一个软链，真正的配置文件为：/etc/selinux/config 
     * SELINUX=enforcing|permissive|disabled
     * SELINUXTYPE=targeted|minimum|mls
     
