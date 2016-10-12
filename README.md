@@ -58,8 +58,7 @@ SELINUXTYPE(安全策略)
   * fixfiles
     一般是对整个文件系统的， 后面一般跟 relabel，对整个系统 relabel后，一般我们都重新启动。如果，在根目录下有.autorelabel空文件的话，每次重新启动时都调用 fixfiles relabel
     
-  * chcon
-    * chcon 修改文件、目录的安全上下文
+  * chcon 修改文件、目录的安全上下文
     * chcon –u[user]
     * chcon –r[role]
     * chcon –t[type] 
