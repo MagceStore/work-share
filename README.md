@@ -29,8 +29,8 @@ type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm
 
  SELinux工具
 
- /usr/sbin/getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
- /usr/sbin/setenforce — 修改SELinux运行模式，例子如下：
+ getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
+ setenforce — 修改SELinux运行模式，例子如下：
 
          • setenforce 1 — SELinux以强制(enforcing)模式运行
          • setenforce 0 — SELinux以警告(permissive)模式运行
@@ -44,11 +44,23 @@ type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm
     
     
      /sbin/fixfiles — 检查或校正文件系统中的安全环境数据库
-     8) chcon 修改文件、目录的安全上下文
+      fixfiles
+         一般是对整个文件系统的， 后面一般跟 relabel，对整个系统 relabel后，一般我们都重新启动。如果，在根目录下有.autorelabel空文件的话，每次重新启动时都调用 fixfiles relabel
+         
+         setfiles / chcon
+      chcon 修改文件、目录的安全上下文
       chcon –u[user]
       chcon –r[role]
       chcon –t[type] 
       chcon –R  递归
+      
+      
+      进程domain的确认
+
+      程序现在在那个domain里运行，我们可以在ps 命令后加 －Z进行查看：
+      ROLE的确认和变更
+
+     命令id能用来确认自己的 security context。
       
       
 context
@@ -93,6 +105,15 @@ TYPE
              • LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15,等级越来越高
              • CATEGORY：代表分类，目前已经定义的分类为c0-c1023
 
+
+
+命令修改 
+ cp
+
+        可以跟 -Z,--context=CONTEXT 在拷贝的时候指定目的地文件的security context
+ ls ps
+ find
+        可以跟 –context 查特定的type的文件
 
 
 http://selinuxproject.org/page/Main_Page
