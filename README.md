@@ -106,6 +106,9 @@ TYPE
              • CATEGORY：代表分类，目前已经定义的分类为c0-c1023
 
 
+level
+      /etc/selinux/targeted/setrans.conf
+
 
 命令修改 
  cp
