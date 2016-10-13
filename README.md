@@ -92,9 +92,8 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
     * type是SElinux security context 中最重要的部分，预设值以_t结尾；
 
   * LEVEL和CATEGORY：定义层次和分类，只用于mls策略中
-    * LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15
+    * LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15 （/etc/selinux/targeted/setrans.conf）
     * CATEGORY：代表分类，目前已经定义的分类为c0-c1023
-    * LEVEL： /etc/selinux/targeted/setrans.conf
 
  ## ls ps -Z
  find –context 查特定的type的文件
