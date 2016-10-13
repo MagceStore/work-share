@@ -44,7 +44,7 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
   * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
     
   * sestatus -v — 显示系统的详细状态
-  * restorecon — 通过为适当的文件或安全环境标记扩展属性，设置一个或多个文件的安全环境
+  * restorecon — 通过为适当的文件或安全环境标记扩展属性，设置一个或多个文件的安全环境 （restorecon -v 查看修改的部分）
   ### 例子
     假设CentOS安装了apache，网页默认的主目录是/var/www/html，我们经常遇到这样的问题，在其他目录中创建了一个网页文件，然后用mv移动到网页默认目录
     /var/www/html中，但是在浏览器中却打不开这个文件，这很可能是因为这个文件的SELinux配置信息是继承原来那个目录的，与/var/www/html目录不同，使
@@ -53,7 +53,7 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
   * fixfiles
     一般是对整个文件系统的， 后面一般跟 relabel，对整个系统 relabel后，一般我们都重新启动。如果，在根目录下有.autorelabel空文件的话，每次重新启动时都调用 fixfiles relabel
     
-  * chcon 修改文件、目录的安全上下文
+  * chcon 修改文件、目录的安全上下文 （chcon -t unconfined_exec_t /usr/sbin/httpd）
     * chcon –u[user]
     * chcon –r[role]
     * chcon –t[type] 
