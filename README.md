@@ -34,6 +34,36 @@
   * type=AVC msg=audit(1378974214.610:465): avc:  denied  { open } for pid=2359 comm="httpd" path="/var/www/html/index.html"
   dev="sda1"ino=1317685 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
 
+## context
+    cp：会重新生成context；
+    mv：context不变。
+    
+  USER：ROLE：TYPE[LEVEL[：CATEGORY]]
+  [用户user]:[角色role]:[类型type（SELinux默认预设规则）]:[MLS、MCS]
+  unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 
+  
+  * USER
+    * user identity：类似Linux系统中的UID，提供身份识别，用来记录身份
+    * 三种常见的 user:
+      user_u ：普通用户登录系统后的预设；
+      system_u ：开机过程中系统进程的预设；
+      root ：root 登录后的预设；
+    * 所有预设的 SELinux Users 都是以 “_u” 结尾的，root 除外。
+        
+  * ROLE
+    * 文件、目录和设备的role：通常是 object_r；
+    * 程序的role：通常是 system_r；    
+    * 使用基于RBAC(Roles Based Access Control) 的strict和mls策略中，用来存储角色信息
+        
+  * TYPE
+    * type：用来将进程和文件划分为不同的组，给每个主体和系统中的文件定义了一个类型；为进程运行提供最低的权限环境；
+    * 当一个类型与执行中的进程相关联时，其type也称为domain；
+    * type是SElinux security context 中最重要的部分，预设值以_t结尾；
+
+  * LEVEL和CATEGORY：定义层次和分类，只用于mls策略中
+    * LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15 （/etc/selinux/targeted/setrans.conf）
+    * CATEGORY：代表分类，目前已经定义的分类为c0-c1023
+
 ## SELinux相关命令
 
   * getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
@@ -74,40 +104,47 @@
   
   * id 能用来确认自己的 security context。
       
-      
-## context
-    cp：会重新生成context；
-    mv：context不变。
-    
-  USER：ROLE：TYPE[LEVEL[：CATEGORY]]
-  [用户user]:[角色role]:[类型type（SELinux默认预设规则）]:[MLS、MCS]
-  unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 
-  
-  * USER
-    * user identity：类似Linux系统中的UID，提供身份识别，用来记录身份
-    * 三种常见的 user:
-      user_u ：普通用户登录系统后的预设；
-      system_u ：开机过程中系统进程的预设；
-      root ：root 登录后的预设；
-    * 所有预设的 SELinux Users 都是以 “_u” 结尾的，root 除外。
-        
-  * ROLE
-    * 文件、目录和设备的role：通常是 object_r；
-    * 程序的role：通常是 system_r；    
-    * 使用基于RBAC(Roles Based Access Control) 的strict和mls策略中，用来存储角色信息
-        
-  * TYPE
-    * type：用来将进程和文件划分为不同的组，给每个主体和系统中的文件定义了一个类型；为进程运行提供最低的权限环境；
-    * 当一个类型与执行中的进程相关联时，其type也称为domain；
-    * type是SElinux security context 中最重要的部分，预设值以_t结尾；
-
-  * LEVEL和CATEGORY：定义层次和分类，只用于mls策略中
-    * LEVEL：代表安全等级,目前已经定义的安全等级为s0-s15 （/etc/selinux/targeted/setrans.conf）
-    * CATEGORY：代表分类，目前已经定义的分类为c0-c1023
-
- ## ls ps -Z
+## 其他命令 －
+  ls ps -Z
  find –context 查特定的type的文件
 
+## 自定义安全策略
+  SELinux 切换至 Permissive 模式并运行一段时间，便可以在允许访问的情况下记录 SELinux 的问题。
+  '''
+    type=AVC msg=audit(1218128130.653:334): avc:  denied  { connectto } for  pid=9111 comm="smtpd" 
+    path="/var/spool/postfix/postgrey/socket"
+    scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:system_r:initrc_t:s0 tclass=unix_stream_socket
+    type=AVC msg=audit(1218128130.653:334): avc:  denied  { write } for  pid=9111 comm="smtpd" name="socket" dev=sda6 
+    ino=39977017 scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:object_r:postfix_spool_t:s0 
+    tclass=sock_file 
+  '''
+  
+  通过audit2allow 来生成 安全策略文件
+  '''
+    grep smtpd_t /var/log/audit/audit.log | audit2allow -m postgreylocal > postgreylocal.te
+    cat postgreylocal.te
+    module postgreylocal 1.0;
+    require {
+            type postfix_smtpd_t;
+            type postfix_spool_t;
+            type initrc_t;
+            class sock_file write;
+            class unix_stream_socket connectto;
+    }
+    #============= postfix_smtpd_t ==============
+    allow postfix_smtpd_t initrc_t:unix_stream_socket connectto;
+    allow postfix_smtpd_t postfix_spool_t:sock_file write; 
+  '''
+  
+  续继用 audit2allow 创建一个自定的政策模块
+  '''
+    grep smtpd_t /var/log/audit/audit.log | audit2allow -M postgreylocal 
+  '''
+  
+  利用 semodule 这个指令将 postgrey 政策模块装入现有的 SELinux 政策内
+  '''
+    semodule -i postgreylocal.pp 
+  '''
 
 ### 参考资料
  selinux Project : http://selinuxproject.org/page/Main_Page
