@@ -109,18 +109,18 @@
  find –context 查特定的type的文件
 
 ## 自定义安全策略
-  SELinux 切换至 Permissive 模式并运行一段时间，便可以在允许访问的情况下记录 SELinux 的问题。
-  '''
+  * SELinux 切换至 Permissive 模式并运行一段时间，便可以在允许访问的情况下记录 SELinux 的问题。
+  ```
     type=AVC msg=audit(1218128130.653:334): avc:  denied  { connectto } for  pid=9111 comm="smtpd" 
     path="/var/spool/postfix/postgrey/socket"
     scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:system_r:initrc_t:s0 tclass=unix_stream_socket
     type=AVC msg=audit(1218128130.653:334): avc:  denied  { write } for  pid=9111 comm="smtpd" name="socket" dev=sda6 
     ino=39977017 scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:object_r:postfix_spool_t:s0 
     tclass=sock_file 
-  '''
+  ```
   
-  通过audit2allow 来生成 安全策略文件
-  '''
+  * 通过audit2allow 来生成 安全策略文件
+  ```
     grep smtpd_t /var/log/audit/audit.log | audit2allow -m postgreylocal > postgreylocal.te
     cat postgreylocal.te
     module postgreylocal 1.0;
@@ -134,17 +134,17 @@
     #============= postfix_smtpd_t ==============
     allow postfix_smtpd_t initrc_t:unix_stream_socket connectto;
     allow postfix_smtpd_t postfix_spool_t:sock_file write; 
-  '''
+  ```
   
-  续继用 audit2allow 创建一个自定的政策模块
-  '''
+  * 续继用 audit2allow 创建一个自定的政策模块
+  ```
     grep smtpd_t /var/log/audit/audit.log | audit2allow -M postgreylocal 
-  '''
+  ```
   
-  利用 semodule 这个指令将 postgrey 政策模块装入现有的 SELinux 政策内
-  '''
+  * 利用 semodule 这个指令将 postgrey 政策模块装入现有的 SELinux 政策内
+  ```
     semodule -i postgreylocal.pp 
-  '''
+  ```
 
 ### 参考资料
  selinux Project : http://selinuxproject.org/page/Main_Page
