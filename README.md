@@ -147,6 +147,6 @@
   ```
 
 ### 参考资料
- selinux Project : http://selinuxproject.org/page/Main_Page
- centos SELinux : https://wiki.centos.org/HowTos/SELinux (https://wiki.centos.org/zh/HowTos/SELinux)
- fedora SELinux : https://docs.fedoraproject.org/en-US/Fedora/19/html/Security_Guide/ch09.html
+ * selinux Project : http://selinuxproject.org/page/Main_Page
+ * centos SELinux : https://wiki.centos.org/HowTos/SELinux (https://wiki.centos.org/zh/HowTos/SELinux)
+ * fedora SELinux : https://docs.fedoraproject.org/en-US/Fedora/19/html/Security_Guide/ch09.html
