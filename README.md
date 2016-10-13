@@ -110,7 +110,7 @@
 
 ## 自定义安全策略
   * SELinux 切换至 Permissive 模式并运行一段时间，便可以在允许访问的情况下记录 SELinux 的问题。
-  ```
+  ```bash
     type=AVC msg=audit(1218128130.653:334): avc:  denied  { connectto } for  pid=9111 comm="smtpd" 
     path="/var/spool/postfix/postgrey/socket"
     scontext=system_u:system_r:postfix_smtpd_t:s0 tcontext=system_u:system_r:initrc_t:s0 tclass=unix_stream_socket
@@ -120,7 +120,7 @@
   ```
   
   * 通过audit2allow 来生成 安全策略文件
-  ```
+  ```bash
     grep smtpd_t /var/log/audit/audit.log | audit2allow -m postgreylocal > postgreylocal.te
     cat postgreylocal.te
     module postgreylocal 1.0;
@@ -137,12 +137,12 @@
   ```
   
   * 续继用 audit2allow 创建一个自定的政策模块
-  ```
+  ```bash
     grep smtpd_t /var/log/audit/audit.log | audit2allow -M postgreylocal 
   ```
   
   * 利用 semodule 这个指令将 postgrey 政策模块装入现有的 SELinux 政策内
-  ```
+  ```bash
     semodule -i postgreylocal.pp 
   ```
 
