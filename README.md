@@ -38,7 +38,7 @@ Linux系统是使用自主访问控制的，用户可以自己请求更高的权
   * setenforce — 修改SELinux运行模式，例子如下：
     * setenforce 1 — SELinux以强制(enforcing)模式运行
     * setenforce 0 — SELinux以警告(permissive)模式运行
-  * 关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
+    * 关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
   
   * getsebool -a： 列出SELinux的所有布尔值 （安全策略）
   * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
