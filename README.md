@@ -8,17 +8,17 @@
 ## Linux安全问题
   * 管理员不能控制用户：用户可以把谁都可读入的权限赋予敏感文件，例如 ssh key及惯常用来放置这些key的目录，~/.ssh/。
   * 进程可以更改安全性属性：每位用户的邮件文件应该只供该用户读入，但邮件客户端软件有能力将它们改为谁都可读入。
-  
+    
+## SELinux的优势
+  在SELinux中没有root这个概念，安全策略是由管理员来定义的，任何软件都无法取代它。这意味着那些潜在的恶意软件所能造成的损害可以被控制在最小。一般情况
+  下只有非常注重数据安全的企业级用户才会使用SELinux。
+
 ## SELinux开关
   * getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
   * setenforce — 修改SELinux运行模式，例子如下：
     * setenforce 1 — SELinux以强制(enforcing)模式运行
     * setenforce 0 — SELinux以警告(permissive)模式运行
   * 关闭SELinux，修改配置文件：/etc/selinux/config或/etc/sysconfig/selinux
-    
-## SELinux的优势
-  在SELinux中没有root这个概念，安全策略是由管理员来定义的，任何软件都无法取代它。这意味着那些潜在的恶意软件所能造成的损害可以被控制在最小。一般情况
-  下只有非常注重数据安全的企业级用户才会使用SELinux。
 
 ## 配置文件
   * /etc/sysconfig/selinux是一个软链，真正的配置文件为：/etc/selinux/config 
