@@ -1,6 +1,7 @@
 # SELinux
   SELinux是一个安全体系结构，它通过LSM(Linux Security Modules)框架被集成到Linux Kernel 2.6.x中。它是NSA (United States National Security Agency)和SELinux社区的联合项目,是 Linux历史上最杰出的新安全子系统。
 
+现已经覆盖了整个系统 (semanage fcontext --list)<br/>
 操作系统有两类访问控制：自主访问控制（DAC）和强制访问控制（MAC）。<br/>
 标准Linux安全是一种DAC，SELinux为Linux增加了一个灵活的和可配置的的MAC。<br/>
 只有同时满足了【标准Linux访问控制】和【SELinux访问控制】时，进程才能访问文件。<br/>
@@ -14,6 +15,7 @@
   下只有非常注重数据安全的企业级用户才会使用SELinux。
 
 ## SELinux开关
+  * sestatus -v
   * getenforce - 查看当前SELinux运行模式 enforcing|permissive|disabled
   * setenforce — 修改SELinux运行模式，例子如下：
     * setenforce 1 — SELinux以强制(enforcing)模式运行
@@ -80,7 +82,6 @@
   * getsebool -a： 列出SELinux的所有布尔值 （安全策略）
   * setsebool： 设置SELinux布尔值，如：setsebool -P dhcpd_disable_trans=0，-P表示即使用reboot之后，仍然有效。
     
-  * sestatus -v — 显示系统的详细状态
   * restorecon — 通过为适当的文件或安全环境标记扩展属性，设置一个或多个文件的安全环境 （restorecon -v 查看修改的部分）
   ### 例子
     假设CentOS安装了apache，网页默认的主目录是/var/www/html，我们经常遇到这样的问题，在其他目录中创建了一个网页文件，然后用mv移动到网页默认目录
@@ -100,9 +101,6 @@
     semanage port -a -t httpd_port_t -p tcp 81 (允许81能够被监听)
 
   * secon－p 进程domain的确认
-  
-  * sealert -a /var/log/audit/audit.log > /path/to/mylogfile.txt 
-  
   * id 能用来确认自己的 security context。
       
 ## 其他命令 －
