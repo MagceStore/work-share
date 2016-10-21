@@ -1,5 +1,5 @@
 # SELinux
-  SELinux是一个安全体系结构，它通过LSM(Linux Security Modules)框架被集成到Linux Kernel 2.6.x中。它是NSA (United States National Security Agency)和SELinux社区的联合项目,是 Linux历史上最杰出的新安全子系统。
+  SELinux是一个安全体系结构，它通过LSM(Linux Security Modules)框架被集成到Linux Kernel 2.6.x中。它是NSA (United States National Security Agency)和Linux社区的联合项目,是 Linux历史上最杰出的新安全子系统。
 
 现已经覆盖了整个系统 (semanage fcontext --list)<br/>
 操作系统有两类访问控制：自主访问控制（DAC）和强制访问控制（MAC）。<br/>
