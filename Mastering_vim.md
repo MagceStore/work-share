@@ -6,7 +6,7 @@
     
 ## Download Vim
 
-[Vim` Org](http://www.vim.org)
+[Vim Org](http://www.vim.org)
 
 ## 常用的 Mode
 
