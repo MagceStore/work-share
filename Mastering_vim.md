@@ -25,7 +25,7 @@ normal mode :
 * :n next file 
 * :N previous file
              
- ```bash vim file1
+```bash vim file1
 :e file2 file3 
 :files / :ls
 :e## / ctrl + ^
