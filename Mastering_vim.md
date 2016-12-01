@@ -22,11 +22,10 @@ vim file1 file2 file3
 ```
 
 normal mode :
-             * :n next file
-             * :N previous file
+* :n next file 
+* :N previous file
              
-```bash
-vim file1
+ ```bash vim file1
 :e file2 file3 
 :files / :ls
 :e## / ctrl + ^
@@ -34,9 +33,9 @@ vim file1
 ```
 
 normal mode : 
-             * :bn next file
-             * :bN previous file
-             * :bl last file
+* :bn next file
+* :bN previous file
+* :bl last file
 
 ```bash
 vim filename(游标会出现在文档的最后)
