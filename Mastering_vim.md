@@ -9,28 +9,34 @@
     * command mode (:)
     * visual mode (v)
 ## open files
-    ```bash
+
+    ```
     vim file1 file2 file3
     ```
+
     normal mode :
                  * :n next file
                  * :N previous file
-    ```bash
+                 
+    ```
     vim file1
     :e file2 file3 
     :files / :ls
     :e## / ctrl + ^
     :b + [buffer number]
     ```
+
     normal mode : 
                  * :bn next file
                  * :bN previous file
                  * :bl last file
-    ```bash
+
+    ```
     vim filename(游标会出现在文档的最后)
     vim n filename(游标会出现在文档的第n行的行首)
     vim /string filename(游标会出现在第一个符合搜索条件的字符串上，按n可以继续查找)
     ```
+
 ## 常用命令
     * :w :q :e :q!
     * :wq :x == ZZ :w filename(另存为)
